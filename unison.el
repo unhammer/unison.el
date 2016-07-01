@@ -5,7 +5,7 @@
 ;; Author: Kevin Brubeck Unhammer <unhammer@fsfe.org>
 ;; Version: 0.1.0
 ;; Package-Requires: ((emacs "24.1"))
-;; Url: http://wiki.apertium.org/wiki/Emacs
+;; Url: http://github.com/unhammer/unison.el
 ;; Keywords: sync
 
 ;; This file is not part of GNU Emacs.
@@ -49,6 +49,7 @@ Same arguments as expected by `set-process-sentinel'."
   "Args sent to Unison."
   :group 'unison)
 
+;;;###autoload
 (defun unison ()
   "Run Unison; only show buffer if there was output."
   (interactive)
