@@ -30,6 +30,8 @@
 
 ;;; Code:
 
+(eval-when-compile
+  (require 'cl))
 
 (defgroup unison nil
   "For syncing files with Unison"
