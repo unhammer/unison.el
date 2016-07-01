@@ -1,0 +1,2 @@
+Very simple wrapper for running Unison file sync with as little noise
+as possible. See [[file:unison.el]]
