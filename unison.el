@@ -42,15 +42,18 @@
 (defcustom unison-sentinel-hook nil
   "Run by `unison' on process state change.
 Same arguments as expected by `set-process-sentinel'."
-  :group 'unison)
+  :group 'unison
+  :type 'function)
 
 (defcustom unison-program "unison"
   "Path to the Unison binary."
-  :group 'unison)
+  :group 'unison
+  :type 'string)
 
-  :group 'unison)
 (defcustom unison-args nil
   "Arguments sent to Unison."
+  :group 'unison
+  :type '(repeat string))
 
 ;;;###autoload
 (defun unison ()
