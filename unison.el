@@ -1,4 +1,4 @@
-;;; unison.el --- sync with Unison
+;;; unison.el --- sync with Unison -*- lexical-binding: t -*-
 
 ;; Copyright (C) 2014-2016 Kevin Brubeck Unhammer
 
@@ -30,9 +30,6 @@
 
 ;;; Code:
 
-(eval-when-compile
-  (require 'cl))
-
 (defgroup unison nil
   "For syncing files with Unison"
   :tag "unison"
@@ -55,10 +52,10 @@ Same arguments as expected by `set-process-sentinel'."
 (defun unison ()
   "Run Unison; only show buffer if there was output."
   (interactive)
-  (lexical-let ((proc (apply #'start-process
-                             "Unison" "*unison*" unison-program
-                             unison-args))
-                (buffer-displayed nil))
+  (let ((proc (apply #'start-process
+                     "Unison" "*unison*" unison-program
+                     unison-args))
+        (buffer-displayed nil))
     (set-process-sentinel proc (lambda (p s)
                                  (run-hook-with-args 'unison-sentinel-hook p s)
                                  (if (equal s "finished\n")
