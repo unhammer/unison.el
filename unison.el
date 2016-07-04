@@ -28,6 +28,10 @@
 ;; Simple wrappers for running Unison to sync things; handy for
 ;; putting into midnight-hook's or similar.
 
+;; To use, first set `unison-args' to the arguments you'd normally
+;; call unison with (Unison won't do ), then call M-x unison (or put
+;; #'unison into a hook).
+
 ;;; Code:
 
 (defgroup unison nil
@@ -44,13 +48,14 @@ Same arguments as expected by `set-process-sentinel'."
   "Path to the Unison binary."
   :group 'unison)
 
-(defcustom unison-args '("-batch" "-silent" "-sshargs" "-q" "~/foo" "ssh://server/foo")
-  "Args sent to Unison."
   :group 'unison)
+(defcustom unison-args nil
+  "Arguments sent to Unison."
 
 ;;;###autoload
 (defun unison ()
-  "Run Unison; only show buffer if there was output."
+  "Run Unison; only show buffer if there was output.
+You need to set `unison-args' before calling this function."
   (interactive)
   (let ((proc (apply #'start-process
                      "Unison" "*unison*" unison-program
@@ -62,7 +67,11 @@ Same arguments as expected by `set-process-sentinel'."
                                      (message "Unison %s" s)
                                    (when (buffer-live-p (process-buffer p))
                                      (display-buffer (process-buffer p)))
-                                   (error "Unison: %s" s))))
+                                   (if (and (buffer-live-p (process-buffer p))
+                                            (string-match "^Usage: unison.*" (with-current-buffer (process-buffer p)
+                                                                               (buffer-string))))
+                                       (error "Unison: please set `unison-args', %s" s)
+                                     (error "Unison: %s" s)))))
     (set-process-filter proc (lambda (p s)
                                (if (buffer-live-p (process-buffer p))
                                    (progn
